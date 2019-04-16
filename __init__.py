@@ -1,3 +1,7 @@
+# Импорт модуля английского языка
+from phonetic_machine import eng_lang
+# Импорт модуля русского языка
+from phonetic_machine import ru_lang
 
 
 def init():
@@ -10,13 +14,13 @@ def init():
     print("\nЧтобы выйти из программы введи: выйти")
     print("\n----------")
 
-    lang = input()
+    lang = input().strip()
 
-    if lang == "eng" or lang == "рус":
+    if lang in ('eng', 'rus'):
 
         choose_lang(lang)
 
-    elif lang == "exit" or lang == "выйти":
+    elif lang in ('exit', 'выйти'):
         "\nBye! Пока!"
         exit()
 
@@ -28,12 +32,10 @@ def init():
 
 def eng_language():
 
-    from phonetic_machine import eng_lang
-
     print("\nOK. You have chosen English.")
     print("Now you can enter any word in English and we will make a phonetic analysis of it.")
 
-    word = input()
+    word = input().strip()
 
     # Отправляем слово на проверку
     word_result = eng_lang.get_english_word(word)
@@ -69,7 +71,6 @@ def eng_language():
 
 
 def ru_language():
-    from phonetic_machine import ru_lang
 
     print("\nХорошо. Вы выбрали русский язык.")
     print("Теперь вы можете ввести любое слово по-русски и мы сделаем их фонетический анализ.")
@@ -119,7 +120,7 @@ def choose_lang(lang):
 
         ru_language()
 
-    elif lang == "exit" or lang == "выйти":
+    elif lang in ('exit', 'выйти'):
         print("See you soon! Увидемся!")
         exit()
 

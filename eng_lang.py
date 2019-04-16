@@ -15,6 +15,9 @@ def get_english_word(word):
     return letters, vowels, consonants
 
 
+"""Подсчитываем количество гласных в слове"""
+
+
 def count_vowels(word):
     word = list(word)
     common_vowels = []
@@ -22,8 +25,10 @@ def count_vowels(word):
         for b in eng_vowels:
             if a == b:
                 common_vowels.append(a)
-
     return common_vowels
+
+
+"""Подсчитываем количество согласных в слове"""
 
 
 def count_consonants(word):
@@ -33,5 +38,4 @@ def count_consonants(word):
         for b in eng_consonants:
             if a == b:
                 common_consonants.append(a)
-
     return common_consonants

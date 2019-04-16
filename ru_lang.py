@@ -16,7 +16,9 @@ def get_russian_word(word):
     return letters, vowels, consonants
 
 
-# Ищем гласные в слове
+"""Подсчитываем количество гласных в слове"""
+
+
 def count_vowels(word):
     word = list(word)
     common_vowels = []
@@ -24,11 +26,12 @@ def count_vowels(word):
         for b in ru_vowels:
             if a == b:
                 common_vowels.append(a)
-
     return common_vowels
 
 
-# Ищем согласные в слове
+"""Подсчитываем количество согласные в слове"""
+
+
 def count_consonants(word):
     word = list(word)
     common_consonants = []
@@ -36,5 +39,4 @@ def count_consonants(word):
         for b in ru_consonants:
             if a == b:
                 common_consonants.append(a)
-
     return common_consonants
