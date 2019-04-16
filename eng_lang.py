@@ -1,9 +1,9 @@
 # Lists of vowels and consonants in English language
-eng_vowels = ['B', 'C', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M',
+eng_vowels = ('B', 'C', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M',
               'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'X', 'Y', 'Z',
               'b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l',
-              'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'w', 'x', 'y', 'z']
-eng_consonants = ['A', 'E', 'I', 'O', 'U', 'a', 'e', 'i', 'o', 'u']
+              'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'w', 'x', 'y', 'z')
+eng_consonants = ('A', 'E', 'I', 'O', 'U', 'a', 'e', 'i', 'o', 'u')
 
 
 # Получаем вводимое пользователем слово
@@ -11,10 +11,8 @@ def get_english_word(word):
     letters = len(word)
     vowels = count_vowels(word)
     consonants = count_consonants(word)
-    # Здесь хранится вся информация о слове
-    result = [letters, vowels, consonants]
-
-    return result
+    # Возвращаем результат пользователю
+    return letters, vowels, consonants
 
 
 def count_vowels(word):
