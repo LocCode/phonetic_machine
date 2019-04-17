@@ -2,10 +2,17 @@
 This is the module for connecting with Telegram Bot
 '''
 
+
+# Import diffrent telegram libs
 import telegram
 import logging
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, InlineQueryHandler
 from telegram import InlineQueryResultArticle, InputTextMessageContent
+
+# Импорт модуля английского языка
+import eng_lang
+# Импорт модуля русского языка
+import ru_lang
 
 my_tg_token = '882261003:AAEsahXWDo6AOkLrfC1NbfVEUF7v0Ki0CiY'
 # Different stuff from Telegram documentation
@@ -39,6 +46,53 @@ def start(update, context):
 # Adding function "Start" to the dispatcher
 start_handler = CommandHandler('start', start)
 dispatcher.add_handler(start_handler)
+
+
+# Analyzing russian word
+def ru(update, context):
+    word = update.message.text.replace("/ru", "")
+    word_result = ru_lang.get_russian_word(word)
+
+    # Выводим результаты фонетического анализа слова
+    print("\nРезультат фонетического анализа слова «", word, "»")
+
+    # Вывод количества букв в вводимом слове
+    print("\nВсего букв в слове «", word, "»:", word_result[0])
+
+    # Вывод количества гласных и их количества
+    print("\nВсего гласных в слове «", word, "»:", len(word_result[1]))
+    print("Список гласных в слове: «", word, "»:", word_result[1])
+
+    # Вывод количества согласных и их количества
+    print("\nВсего согласных в слове «", word, "»:", len(word_result[2]))
+    print("Список согласных в слове: «", word, "»:", word_result[2])
+
+    context.bot.send_message(chat_id=update.message.chat_id, text=word_result)
+
+
+ru_handler = CommandHandler('ru', ru)
+dispatcher.add_handler(ru_handler)
+
+
+# Analyzing english word
+def eng(update, context):
+    print(update.message.text)
+    word = update.message.text.replace("/eng", "")
+    word_result = eng_lang.get_english_word(word)
+
+    # Выводим результаты фонетического анализа слова
+    message_result = "\nThe result of phonetic analysis of the word «", word, "» " \
+                                                                          "\nTotal letters in the «", word, "»:", word_result[0]
+    "\nTotal consonants in the word «", word, "»:", len(word_result[1]), "" \
+                                                                         "\nThe list of consonants of the word: «", word, "»:", word_result[1],
+    "\nTotal vowels in the word «", word, "»:", len(word_result[2]),\
+    "\nThe list of vowels of the word: «", word, "»:", word_result[2]
+
+    context.bot.send_message(chat_id=update.message.chat_id, text=message_result)
+
+
+eng_handler = CommandHandler('eng', eng)
+dispatcher.add_handler(eng_handler)
 
 
 # Into Caps function with inline mode

@@ -1,7 +1,7 @@
 # Импорт модуля английского языка
-from phonetic_machine import eng_lang
+import eng_lang
 # Импорт модуля русского языка
-from phonetic_machine import ru_lang
+import ru_lang
 
 
 def init():
