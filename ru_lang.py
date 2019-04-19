@@ -13,7 +13,8 @@ def get_russian_word(word):
     vowels = count_vowels(word)
     consonants = count_consonants(word)
     # Возвращаем результат пользователю
-    return letters, vowels, consonants
+    return "Результат фонетического анализа слова «" + word + "»" + "\nВсего букв в слове: " + str(letters) \
+           + "\nВсего гласных: " + str(vowels) + "\nВсего согласных: " + str(consonants)
 
 
 """Подсчитываем количество гласных в слове"""

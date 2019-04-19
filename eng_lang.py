@@ -12,7 +12,8 @@ def get_english_word(word):
     vowels = count_vowels(word)
     consonants = count_consonants(word)
     # Возвращаем результат пользователю
-    return letters, vowels, consonants
+    return "The phonetic analysis of the word  «" + word + "»" + "\nTotal number of the letters: " + str(letters) +\
+           "\nTotal vowels: " + str(vowels) + "\nTotal consonants: " + str(consonants)
 
 
 """Подсчитываем количество гласных в слове"""
