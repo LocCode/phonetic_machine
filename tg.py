@@ -1,91 +1,87 @@
-'''
-This is the module for connecting with Telegram Bot
-'''
-
 from telegram.ext import Updater
 import logging
-import eng_lang
-import ru_lang
+import languages
+import database
 from telegram.ext import CommandHandler
 from telegram.ext import MessageHandler, Filters, InlineQueryHandler
 
-tg_token = '882261003:AAEsahXWDo6AOkLrfC1NbfVEUF7v0Ki0CiY'
-updater = Updater(token=tg_token, use_context=True)
-dispatcher = updater.dispatcher
+
+lang = languages.Language()
 
 
-logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                     level=logging.INFO)
+class Telegram:
+    def __init__(self, token='882261003:AAEsahXWDo6AOkLrfC1NbfVEUF7v0Ki0CiY'):  # <-- Telegram token is here
+        self.updater = Updater(token=token, use_context=True)
+        self.dispatcher = self.updater.dispatcher
+
+    def send_msg(self, context, chat_id, text):
+        context.bot.send_message(chat_id=chat_id,
+                                 text=text)
+
+    @staticmethod
+    def start(update, context):
+        context.bot.send_message(chat_id=update.message.chat_id,
+                                 text="Hello! This bot can make a phonetic analysis of any English word or sentence. "
+                                      "\n Just enter /eng and type the word. \n For example: /eng Apple"
+                                      "\n But you may also try to enter the word or sentence without command and the bot will try to detect the language it self."
+                                      "\n\nПривет! Этот бот может сделать фонетический анализ любого русского слова или предложения."
+                                      "\n Просто введите /ru и ваше слово или предложение."
+                                      "\n Но также, вы можете попробовать ввести слово или предложение без команды и бот попытается самостоятельно определить язык.")
+
+    def echo(self, update, context):
+        context.bot.send_message(chat_id=update.message.chat_id, text=lang.autodetect_lang(update.message))
+#TODO: Нужно переписать функцию SET_LANG, так как сейчас в нее передаются все данные о сообщение, но перед фильтром необходимо передать только сообщение
+    def ru(self, update, context):
+        print(update.message.replace("/ru", ""))
+        context.bot.send_message(chat_id=update.message.chat_id, text=lang.set_lang(update.message.replace("/ru", ""), 'ru'))
+
+    def uz(self, update, context):
+        context.bot.send_message(chat_id=update.message.chat_id, text=lang.set_lang(update.message.replace("/uz", ""), 'uz'))
+
+    def en(self, update, context):
+        context.bot.send_message(chat_id=update.message.chat_id, text=lang.set_lang(update.message.replace("/en", ""), 'en'))
+
+    def fr(self, update, context):
+        context.bot.send_message(chat_id=update.message.chat_id, text=lang.set_lang(update.message.replace("/fr", ""), 'fr'))
+
+    def de(self, update, context):
+        context.bot.send_message(chat_id=update.message.chat_id, text=lang.set_lang(update.message.replace("/de", ""), 'de'))
 
 
-def start(update, context):
-    context.bot.send_message(chat_id=update.message.chat_id, text="Hello! This bot can make a phonetic analysis of any English word. "
-                                                                  "\n Just enter /eng and type the word. \n For example: /eng Apple "
-                                                                  "\n\nПривет! Этот бот может сделать фонетический анализ любого русского слова."
-                                                                  "\n Всего лишь введите /ru и ваше слово. Например: /ru Яблоко")
+    def start_pooling(self):
+        self.updater.start_polling()
 
 
-start_handler = CommandHandler('start', start)
-dispatcher.add_handler(start_handler)
+telegram_bot = Telegram()  # Init the class of Telegram
 
 
-'''
-The command /eng receives English word and make phonetic analysis of it
-'''
+# Registration of different handlers of the bot
+start_handler = CommandHandler('start', telegram_bot.start)
+telegram_bot.dispatcher.add_handler(start_handler)
 
+# Get any word/sentence and auto-detect the lang of it
+echo_handler = MessageHandler(Filters.text, telegram_bot.echo)
+telegram_bot.dispatcher.add_handler(echo_handler)
 
-def eng(update, context):
+# Telegram handler for Russian
+ru_handler = CommandHandler('ru', telegram_bot.ru)
+telegram_bot.dispatcher.add_handler(ru_handler)
 
-    word = update.message.text.replace("/eng", "").strip()
+# Telegram handler for English
+en_handler = CommandHandler('en', telegram_bot.en)
+telegram_bot.dispatcher.add_handler(en_handler)
 
-    if word != "":
-        result = eng_lang.get_english_word(word)
-        context.bot.send_message(chat_id=update.message.chat_id, text=result)
+# Telegram handler for Uzbek
+uz_handler = CommandHandler('uz', telegram_bot.uz)
+telegram_bot.dispatcher.add_handler(uz_handler)
 
-    else:
-        context.bot.send_message(chat_id=update.message.chat_id, text="No word has been sent.\nExample: /eng Apple.")
+# Telegram handler for French
+fr_handler = CommandHandler('fr', telegram_bot.fr)
+telegram_bot.dispatcher.add_handler(fr_handler)
 
+# Telegram handler for German
+de_handler = CommandHandler('de', telegram_bot.de)
+telegram_bot.dispatcher.add_handler(de_handler)
 
-eng_handler = CommandHandler('eng', eng)
-dispatcher.add_handler(eng_handler)
+telegram_bot.start_pooling()  # Starting pooling the requests, it starts the bot
 
-
-'''
-The command /ru receives Russian word and make phonetic analysis of it
-'''
-
-
-def ru(update, context):
-
-    word = update.message.text.replace("/ru", "").strip()
-
-    if word != "":
-        result = ru_lang.get_russian_word(word)
-        context.bot.send_message(chat_id=update.message.chat_id, text=result)
-
-    else:
-        context.bot.send_message(chat_id=update.message.chat_id, text="Вы не послали никакого слова.\nПример: /eng Apple.")
-
-
-ru_handler = CommandHandler('ru', ru)
-dispatcher.add_handler(ru_handler)
-
-
-def echo(update, context):
-    context.bot.send_message(chat_id=update.message.chat_id, text=update.message.text)
-
-
-echo_handler = MessageHandler(Filters.text, echo)
-dispatcher.add_handler(echo_handler)
-
-
-def unknown(update, context):
-    context.bot.send_message(chat_id=update.message.chat_id, text="Sorry, I didn't understand that command.\nИзвините, но я не знаю такой команды.")
-
-
-unknown_handler = MessageHandler(Filters.command, unknown)
-dispatcher.add_handler(unknown_handler)
-
-updater.start_polling()
-
-#updater.stop()
