@@ -7,23 +7,34 @@ class Language:
     This method tries to automatically detect the language of the word/sentence
     '''
 
-    def autodetect_lang(self, user):
+    def autodetect_lang(self, user, lang="auto"):
 
-        self.user_input = user.text
-        self.word= TextBlob(self.user_input)
-        self.current_lang = self.word.detect_language()
+
+
+        if lang == "auto":
+            self.user_input = user.text
+            self.word = TextBlob(self.user_input)
+            self.current_lang = self.word.detect_language()
+        else:
+            self.user_input = user.text[3:]
+            self.word = TextBlob(self.user_input)
+            self.current_lang = lang
+
         self.total_letters = len(self.user_input.strip())
         self.total_words = len(self.word.words)
         return self.total_result()
 
-    def set_lang(self, user, lang):
+    '''def set_lang(self, user, lang):
         print("Прямое назначение языка")
         self.user_input = user.text
         self.word = TextBlob(self.user_input)
-        self.current_lang = lang
+
+        if mode == "direct":
+            self.current_lang = lang
+
         self.total_letters = len(self.user_input.strip())
         self.total_words = len(self.word.words)
-        return self.total_result()
+        return self.total_result()'''
 
     '''
         According to the chosen language of the word, this function sets the suitable alphabet

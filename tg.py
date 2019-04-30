@@ -1,7 +1,5 @@
 from telegram.ext import Updater
-import logging
 import languages
-import database
 from telegram.ext import CommandHandler
 from telegram.ext import MessageHandler, Filters, InlineQueryHandler
 
@@ -30,22 +28,21 @@ class Telegram:
 
     def echo(self, update, context):
         context.bot.send_message(chat_id=update.message.chat_id, text=lang.autodetect_lang(update.message))
-#TODO: Нужно переписать функцию SET_LANG, так как сейчас в нее передаются все данные о сообщение, но перед фильтром необходимо передать только сообщение
+
     def ru(self, update, context):
-        print(update.message.replace("/ru", ""))
-        context.bot.send_message(chat_id=update.message.chat_id, text=lang.set_lang(update.message.replace("/ru", ""), 'ru'))
+        context.bot.send_message(chat_id=update.message.chat_id, text=lang.autodetect_lang(update.message, 'ru'))
 
     def uz(self, update, context):
-        context.bot.send_message(chat_id=update.message.chat_id, text=lang.set_lang(update.message.replace("/uz", ""), 'uz'))
+        context.bot.send_message(chat_id=update.message.chat_id, text=lang.autodetect_lang(update.message, 'uz'))
 
     def en(self, update, context):
-        context.bot.send_message(chat_id=update.message.chat_id, text=lang.set_lang(update.message.replace("/en", ""), 'en'))
+        context.bot.send_message(chat_id=update.message.chat_id, text=lang.autodetect_lang(update.message, 'en'))
 
     def fr(self, update, context):
-        context.bot.send_message(chat_id=update.message.chat_id, text=lang.set_lang(update.message.replace("/fr", ""), 'fr'))
+        context.bot.send_message(chat_id=update.message.chat_id, text=lang.autodetect_lang(update.message, 'fr'))
 
     def de(self, update, context):
-        context.bot.send_message(chat_id=update.message.chat_id, text=lang.set_lang(update.message.replace("/de", ""), 'de'))
+        context.bot.send_message(chat_id=update.message.chat_id, text=lang.autodetect_lang(update.message, 'de'))
 
 
     def start_pooling(self):
