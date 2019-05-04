@@ -8,7 +8,7 @@ lang = languages.Language()
 
 
 class Telegram:
-    def __init__(self, token='882261003:AAEsahXWDo6AOkLrfC1NbfVEUF7v0Ki0CiY'):  # <-- Telegram token is here
+    def __init__(self, token='#'):  # <-- Telegram token is here
         self.updater = Updater(token=token, use_context=True)
         self.dispatcher = self.updater.dispatcher
 
